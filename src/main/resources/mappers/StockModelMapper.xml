@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aolang.ss.mappers.StockModelMapper">
+  <resultMap id="BaseResultMap" type="com.aolang.ss.models.StockModel">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="quote_date" jdbcType="INTEGER" property="quoteDate" />
+    <result column="open" jdbcType="DOUBLE" property="open" />
+    <result column="close" jdbcType="DOUBLE" property="close" />
+    <result column="high" jdbcType="DOUBLE" property="high" />
+    <result column="low" jdbcType="DOUBLE" property="low" />
+    <result column="volume" jdbcType="BIGINT" property="volume" />
+  </resultMap>
+  
+  <insert id="insertWithoutConflict" keyColumn="id" keyProperty="id" parameterType="com.aolang.ss.models.StockModel" useGeneratedKeys="true">
+
+    insert into stock_quote (symbol, company_name, quote_date, open, close, high, low, volume
+      )
+    values (
+    #{symbol,jdbcType=VARCHAR},
+    #{companyName,jdbcType=VARCHAR},
+    #{quoteDate,jdbcType=INTEGER}, 
+    #{open,jdbcType=DOUBLE}, 
+    #{close,jdbcType=DOUBLE}, 
+    #{high,jdbcType=DOUBLE}, 
+    #{low,jdbcType=DOUBLE}, 
+    #{volume,jdbcType=INTEGER}
+    )
+    ON CONFLICT ON CONSTRAINT stock_quote_unique DO NOTHING
+  </insert>
+  
+  <update id="createTable">
+ 	 CREATE TABLE IF NOT EXISTS stock_quote
+  	(
+		id bigserial,
+		symbol text NOT NULL,
+		company_name text NOT NULL,
+		quote_date integer NOT NULL,
+		open double precision NOT NULL,
+		close double precision NOT NULL,
+		high double precision NOT NULL,
+		low double precision NOT NULL,
+		volume integer NOT NULL,
+		
+		CONSTRAINT stock_quote_pkey PRIMARY KEY (id),
+		CONSTRAINT stock_quote_unique UNIQUE(symbol, quote_date)
+	 );
+	CREATE INDEX IF NOT EXISTS stock_quote_event_day_index ON stock_quote(quote_date); 
+  </update>
+  <select id="selectQuoteDate" resultType="java.lang.Integer">
+	SELECT distinct quote_date
+	FROM stock_quote
+	ORDER BY quote_date  
+  </select>
+  
+</mapper>

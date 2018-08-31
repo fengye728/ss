@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aolang.ss.mappers.OptionModelMapper">
+
+  <resultMap id="BaseResultMap" type="com.aolang.ss.models.OptionModel">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="stock_symbol" property="stockSymbol" />
+    <result column="event_day" property="eventDay" />
+    <result column="expiration" property="expiration" />
+    <result column="call_put" property="callPut" />
+    <result column="strike" property="strike" />
+    <result column="volume" property="volume" />
+    <result column="price" property="price" />
+    <result column="open_interest" property="openInterest" />
+  </resultMap>
+  
+  <sql id="BaseColumnList">
+   		stock_symbol, 
+    	event_day, 
+  		expiration, 
+  		call_put,
+  		strike,
+  		price,
+  		volume,
+  		open_interest	
+  </sql>
+  
+  <update id="createTable">
+ 	 CREATE TABLE IF NOT EXISTS ${tableName}
+  	(
+	  "id" bigserial PRIMARY KEY,
+	  "stock_symbol" char(6) DEFAULT NULL,
+	  "expiration" integer DEFAULT NULL,
+	  "call_put" char(1) DEFAULT NULL,
+	  "strike" numeric(10,3) DEFAULT NULL,
+	  "price" numeric(10,3) DEFAULT NULL,
+	  "volume" integer DEFAULT NULL,
+	  "event_day" integer DEFAULT NULL,
+	  "open_interest" integer DEFAULT NULL,
+	  
+	  CONSTRAINT ${tableName}_unique UNIQUE(event_day, stock_symbol, expiration, call_put, strike)
+	 );
+	CREATE INDEX IF NOT EXISTS ${tableName}_symbol_index ON ${tableName}(stock_symbol); 
+	CREATE INDEX IF NOT EXISTS ${tableName}_event_day_index ON ${tableName}(event_day); 
+  </update>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+  	SELECT *
+  	FROM ${tableName}
+  	WHERE id = ${id}
+  </select>
+  
+  <insert id="insertWithoutConflict" keyColumn="id" >
+  	INSERT INTO ${tableName}(
+   		stock_symbol, 
+    	event_day, 
+  		expiration, 
+  		call_put,
+  		strike,
+  		price,
+  		volume,
+  		open_interest		
+	)
+  	VALUES 
+        (
+        #{item.stockSymbol},
+        #{item.eventDay},
+        #{item.expiration},
+        #{item.callPut},
+        #{item.strike},
+        #{item.price},
+        #{item.volume},
+        #{item.openInterest}
+        )
+    ON CONFLICT ON CONSTRAINT ${tableName}_unique DO NOTHING
+  </insert>
+</mapper>
