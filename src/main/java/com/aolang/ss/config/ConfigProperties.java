@@ -23,7 +23,7 @@ public class ConfigProperties {
 	
 	private String ftpPassword = "newark";
 	
-	private String dataPath = ".\\data";
+	private String dataPath = "data";
 	
 	// -----------------------------------------------------------
 
