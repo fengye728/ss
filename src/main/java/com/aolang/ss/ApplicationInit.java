@@ -36,6 +36,8 @@ public class ApplicationInit implements ApplicationRunner{
 
 		logger.info("Update history data...");
 		updateTask.updateHis();
+		
+		logger.info("Startup scheduled tasks...");
 	}
 
 }

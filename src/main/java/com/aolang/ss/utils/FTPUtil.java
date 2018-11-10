@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import com.aolang.ss.config.ConfigProperties;
 import com.aolang.ss.constants.CommonConstants;
 
-
 public class FTPUtil {
 	
 	private static Logger logger = Logger.getLogger(FTPUtil.class);
