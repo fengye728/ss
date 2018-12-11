@@ -244,7 +244,7 @@ public class StricknetUtil {
 				int mm = Integer.parseInt(mat.group(1));
 				int dd = Integer.parseInt(mat.group(2));
 				int yy = Integer.parseInt(mat.group(3));
-				return yy * 10000 + mm * 100 + dd;
+				return CommonUtil.safeNDate(yy * 10000 + mm * 100 + dd);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

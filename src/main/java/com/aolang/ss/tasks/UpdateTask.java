@@ -38,10 +38,15 @@ public class UpdateTask {
 	@Autowired
 	StockService stockService;
 	
+	@Scheduled(cron = "${schedule.cron.today}", zone = "${schedule.timezone}")
+	public void updateDaily() {
+		updateToday();
+		updateHis();
+	}
+	
 	/**
 	 * Update today date.
 	 */
-	@Scheduled(cron = "${schedule.cron.today}", zone = "${schedule.timezone}")
 	public void updateToday() {
 		FTPUtil ftpUtil = new FTPUtil(configProperties);
 		// download real time file
